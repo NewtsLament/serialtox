@@ -3,18 +3,42 @@
  *  Created on: 7 Oct 2017
  *      Author: kelvin
  */
-
+#include <unistd.h>
 #include "SerialHandler.h"
+#include "CharToXHandler.h"
 
-int main(int, char*[])
+int main(int argc, char * argv[])
 {
-	SerialHandler ser = SerialHandler("/dev/ttyUSB0",57600);
+	int c;
+	extern char *optarg;
+	std::string ttyPath = "";
+	int ttyBaud = 0;
+    while( ( c = getopt (argc, argv, "+d:b:") ) != -1 )
+    {
+    	switch (c)
+    	{
+    	case 'd' :	ttyPath = optarg;
+    				break;
+    	case 'b' :	ttyBaud = std::stoi(optarg);
+    				break;
+    	}
+    }
+
+	SerialHandler ser = SerialHandler(ttyPath,ttyBaud);
+	CharToXHandler xchar = CharToXHandler();
+	char temp[2];
+	temp[0] = 0;
 	while (1)
 	{
+
 		if (ser.active())
 		{
-			std::cout << ser.getChar() << std::flush; // Print char, flush stream.
+			temp[1] = ser.getChar();
+			std::cout << temp[1] << std::flush; // Print char, flush stream.
+			xchar.write(temp);
 		}
 	}
+	ser.closeSerial();
+	xchar.close();
 	return 0;
 }
