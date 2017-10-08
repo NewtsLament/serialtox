@@ -29,8 +29,8 @@ int main(int argc, char * argv[])
 		if (ser.active())
 		{
 			temp[1] = ser.getChar();
-			std::cout << temp[1] << std::flush; // Print char, flush stream.
-			xchar.write(temp);
+			std::cout << (unsigned int)temp[1] << ", " << std::flush; // Print char, flush stream.
+//			xchar.write(temp);
 		}
 	}
 	ser.closeSerial();
