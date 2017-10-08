@@ -1,8 +1,3 @@
-/*
- *
- *  Created on: 7 Oct 2017
- *      Author: kelvin
- */
 #include <unistd.h>
 #include "SerialHandler.h"
 #include "CharToXHandler.h"

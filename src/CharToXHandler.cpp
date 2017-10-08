@@ -1,10 +1,3 @@
-/*
- * CharToXHandler.cpp
- *
- *  Created on: 8 Oct 2017
- *      Author: kelvin
- */
-
 #include "CharToXHandler.h"
 
 CharToXHandler::CharToXHandler(char * disp)
