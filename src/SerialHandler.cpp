@@ -13,15 +13,15 @@ int SerialHandler::initSerial()
 {
 	int tempf;
 	int tempMode;
-	mode_t mode = O_NOCTTY;
+	mode_t mode = O_NOCTTY | O_RDONLY /*| O_NDELAY*/;
 	tempf = open(portP.c_str(), mode);
 	if (tempf == -1)
 	{
 		throw std::ios_base::failure("Error opening serial port.");
 	}
-	tempMode = fcntl(tempf,F_GETFL);
-	tempMode &= O_RDONLY | O_NDELAY;
-	fcntl(tempf,tempMode);
+	//tempMode = fcntl(tempf,F_GETFL);
+	//tempMode &= O_RDONLY | O_NDELAY;
+	//fcntl(tempf,F_SETFL,tempMode);
 
 	speed_t speed;
 
@@ -87,11 +87,13 @@ int SerialHandler::initSerial()
 	options.c_cc[VMIN]   =  1;                  // read doesn't block
 	options.c_cc[VTIME]  =  5;                  // 0.5 seconds read timeout
 	options.c_cflag     |=  CREAD | CLOCAL;     // turn on READ & ignore ctrl lines
+  //cfmakeraw(&options);
 
 	if (tcsetattr(tempf, TCSANOW, &options) != 0)
 	{
 		perror("Error while setting attributes");
 	}
+  tcflush(tempf, TCIFLUSH);
 
 	return tempf;
 }
@@ -107,6 +109,9 @@ bool SerialHandler::active()
 	if (temp > 0)
 	{
 		return true;
+	} else if (temp)
+	{
+		std::cout << "Test2" << std::endl;
 	} else
 	{
 		if (temp == -1)

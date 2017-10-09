@@ -29,7 +29,7 @@ int main(int argc, char * argv[])
 		if (ser.active())
 		{
 			temp[1] = ser.getChar();
-			std::cout << (unsigned int)temp[1] << ", " << std::flush; // Print char, flush stream.
+			std::cout << (unsigned short int)temp[1] << ", " << std::flush; // Print char, flush stream.
 //			xchar.write(temp);
 		}
 	}
