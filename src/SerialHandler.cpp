@@ -85,8 +85,9 @@ int SerialHandler::initSerial()
 
 	options.c_cflag     &=  ~CRTSCTS;           // no flow control
 	options.c_cc[VMIN]   =  1;                  // read doesn't block
-	options.c_cc[VTIME]  =  5;                  // 0.5 seconds read timeout
+	options.c_cc[VTIME]  =  0;                  // 0.5 seconds read timeout
 	options.c_cflag     |=  CREAD | CLOCAL;     // turn on READ & ignore ctrl lines
+	options.c_lflag		&=	~ICANON;
   //cfmakeraw(&options);
 
 	if (tcsetattr(tempf, TCSANOW, &options) != 0)
